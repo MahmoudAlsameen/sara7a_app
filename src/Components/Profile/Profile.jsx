@@ -54,33 +54,34 @@ const getUserID=()=> {
 
   return (
     <div>
+       <Button variant="btn btn-default-outline my-5 d-block mx-auto" onClick={() => {
+        handleShow();
+        getUserID();
+      }}>
+        <i className="fa-solid fa-share"></i> Share
+      </Button>
     <div className="container text-center py-5 my-5 text-center">
       <div className="card py-5 mb-5">
         <a>
           <img src={avatar} className="avatar" alt="profile pic" />
         </a>
         <h3 className="py-2">profile name</h3>
-        <div className="card text-center">
-          <div className="card-body">
+        
           {isLoading
-  ? ""
+  ? <p>There is no messages!</p>
   : data.map((message, index) => (
-      <div key={index}>{message.messageContent}</div>
-    ))}
-          </div>
+    <div className="card text-center my-3 mb-3">
+    <div className="card-body"><div key={index}>{message.messageContent}</div></div>
         </div>
+    ))}
+          
         {/* get messages and display by iteration here!! */}
     
 
 
 
       </div>
-      <Button variant="btn btn-default-outline" onClick={() => {
-        handleShow();
-        getUserID();
-      }}>
-        <i className="fa-solid fa-share"></i> Share
-      </Button>
+     
   
       {/* Share profile Modal */}
       <Modal show={show} onHide={handleClose}>
