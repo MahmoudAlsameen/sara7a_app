@@ -45,8 +45,8 @@ let{setToken}=useContext(tokenContext)
       {path:"register",element:<Register/>},
       {path:"login",element:<Login/>},
       {path:"profile",element:<ProtectedRoutes><Profile/></ProtectedRoutes>},
-      {path:"*",element:<NotFound/>}
-    ]},{path:"message/:userID",element:<SendMessage></SendMessage>}
+      {path:"message",element:<ProtectedRoutes><SendMessage/></ProtectedRoutes>},{path:"*",element:<NotFound/>}
+    ]},{path:"message/:userID",element:<SendMessage/>}
   ])
 
 

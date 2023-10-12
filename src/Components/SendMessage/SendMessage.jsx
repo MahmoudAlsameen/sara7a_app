@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './SendMessage.module.css'
 import avatar from '../../images/avatar.png'
 import { useParams } from 'react-router-dom'
@@ -6,27 +6,39 @@ import { useFormik } from 'formik'
 import axios from 'axios'
 
 
-export default function SendMessage(values) {
-  
+export default function SendMessage() {
+  let [apiError,setApiError]= useState('')
+  let [apiSuccess,setApiSuccess]= useState('')
   
     let params = useParams()
 
 const SendMessage= async (values)=>{
-
+  try { 
+  
   let data ={
-    ...values,
-    receivedId:params.userID
-  }
-  console.log('sent data is ',data)
+  ...values
+}
+console.log('sent data is ',data)
 let res= await axios.post("https://sara7aiti.onrender.com/api/v1/message",data)
 console.log(res)
+setApiError('')
+setApiSuccess(res.data.messaged)
+
+
+}catch(error){
+  console.log(error.response.data.error)
+  setApiError(error.response.data.error)
+  setApiSuccess("")
+}
+ 
 
 }
 
 
 let formik = useFormik({
 initialValues:{
-  messageContent:""
+  messageContent:"",
+  receivedId:params.userID
 }
 ,onSubmit:(values)=>{
 SendMessage(values)
@@ -45,32 +57,18 @@ SendMessage(values)
       <h3 className="py-2">profile name</h3>
       <div className="container w-50 m-auto">
         <form onSubmit={formik.handleSubmit}>
+          <label htmlFor="receivedId" className='mb-2'>Enter the user id you want to send message to:</label>
+          <input name='receivedId' id='receivedId' value={formik.values.receivedId} placeholder="Enter the user id you want to send message to" className="form-control mb-2" type="text" onChange={formik.handleChange} />
+          {apiError ? <div className="alert alert-danger">{apiError}</div> : ''}
+          {apiSuccess ? <div className="alert alert-success">{apiSuccess}</div> : ''}
           <textarea className="form-control" name="messageContent" onChange={formik.handleChange} cols={10} rows={9} placeholder="You cannot send a Sarahah to yourself, share your profile with your friends :)" defaultValue={""} />
           <button className="btn btn-outline-info mt-3" type='submit'><i className="far fa-paper-plane" /> Send</button>
         </form>
       </div>
     </div>
-    <button data-toggle="modal" data-target="#share" className="btn btn-default-outline share "><i className="fas fa-share-alt" />  Share Profile</button>
   </div>
   {/*  Share profile Modal */}
-  <div className="modal fade" id="share" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div className="modal-dialog">
-      <div className="modal-content">
-        <div className="modal-header">
-          <h5 className="modal-title" id="exampleModalLabel">Share Profile</h5>
-          <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div className="modal-body">
-          <p>host/messages/id</p>
-        </div>
-        <div className="modal-footer">
-          <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  
 </div>
   )
 }
