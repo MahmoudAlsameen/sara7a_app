@@ -21,7 +21,6 @@ export default function Profile() {
   const [userID, setUserID] = useState("");
 
 
-
   const { data, error, isLoading } = useQuery(
     ["messages", localStorage.getItem("userToken")],
     () => getMessages(localStorage.getItem("userToken"))
@@ -44,6 +43,7 @@ const getUserID=()=> {
   if(localStorage.getItem("userToken")){
     let decoded = jwtDecode(localStorage.getItem("userToken"));
     setUserID(decoded.id);
+    console.log()
   }else{
     setUserID("")
   }
@@ -88,7 +88,7 @@ const getUserID=()=> {
         <Modal.Header closeButton>
           <Modal.Title>Share link with your friends</Modal.Title>
         </Modal.Header>
-        <Modal.Body>{userID ? `http://localhost:3000/message/${userID}` : ""}</Modal.Body>
+        <Modal.Body>{userID ? `${window.location.hostname}:${window.location.port}/message/${userID}` : ""}</Modal.Body>
         <Modal.Footer>
           <Button variant="btn btn-default-outline" onClick={handleClose}>
             Close
