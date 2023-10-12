@@ -1,8 +1,39 @@
-import React from 'react'
+import React, {useEffect,useContext} from 'react'
 import styles from './Home.module.css'
-import { Link } from 'react-router-dom'
+import { Link,useNavigate } from 'react-router-dom'
+
+
+import { tokenContext } from '../../Context/tokenContext'
+
+
+
+
+
+
+
+
+
 
 export default function Home() {
+
+  let {token,setToken}= useContext(tokenContext)
+  let navigate = useNavigate()
+  
+
+let handleRedirect=(token)=>{
+  if(token){
+    navigate('/profile')
+  }
+
+}
+
+useEffect(()=>{
+handleRedirect(token)
+
+},[token])
+  
+
+  
   return (
 <div className="container text-center my-5">
   <h4>Sarahah allows you to receive constructive feedback from your friends and co-workers</h4>
