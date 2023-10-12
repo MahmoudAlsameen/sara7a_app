@@ -23,12 +23,18 @@ let res= await axios.post("https://sara7aiti.onrender.com/api/v1/message",data)
 console.log(res)
 setApiError('')
 setApiSuccess(res.data.messaged)
+setTimeout(() => {
+  setApiSuccess("")
+}, 2000);
 
 
 }catch(error){
   console.log(error.response.data.error)
   setApiError(error.response.data.error)
   setApiSuccess("")
+  setTimeout(() => {
+    setApiError("")
+  }, 2000);
 }
  
 
@@ -42,6 +48,8 @@ initialValues:{
 }
 ,onSubmit:(values)=>{
 SendMessage(values)
+formik.values.messageContent=""
+formik.values.receivedId=""
 }
 
 })
@@ -61,7 +69,7 @@ SendMessage(values)
           <input name='receivedId' id='receivedId' value={formik.values.receivedId} placeholder="Enter the user id you want to send message to" className="form-control mb-2" type="text" onChange={formik.handleChange} />
           {apiError ? <div className="alert alert-danger">{apiError}</div> : ''}
           {apiSuccess ? <div className="alert alert-success">{apiSuccess}</div> : ''}
-          <textarea className="form-control" name="messageContent" onChange={formik.handleChange} cols={10} rows={9} placeholder="You cannot send a Sarahah to yourself, share your profile with your friends :)" defaultValue={""} />
+          <textarea className="form-control" name="messageContent" value={formik.values.messageContent} onChange={formik.handleChange} cols={10} rows={9} placeholder="You cannot send a Sarahah to yourself, share your profile with your friends :)" defaultValue={""} />
           <button className="btn btn-outline-info mt-3" type='submit'><i className="far fa-paper-plane" /> Send</button>
         </form>
       </div>
